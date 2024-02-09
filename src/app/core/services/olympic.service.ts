@@ -1,31 +1,37 @@
+// olympic.service.ts
+import { Injectable, ErrorHandler } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { catchError, finalize, map, tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { Country } from '../models/Country';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OlympicService {
   private olympicUrl = './assets/mock/olympic.json';
-  private olympics$ = new BehaviorSubject<any>(undefined);
+  private loading$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private errorHandler: ErrorHandler,
+    private router: Router
+  ) {}
 
-  loadInitialData() {
-    return this.http.get<any>(this.olympicUrl).pipe(
-      tap((value) => this.olympics$.next(value)),
-      catchError((error, caught) => {
-        // TODO: improve error handling
-        console.error(error);
-        // can be useful to end loading state and let the user know something went wrong
-        this.olympics$.next(null);
-        return caught;
-      })
-    );
+  loadInitialData(): Observable<Country[]> {
+    return this.http.get<Country[]>(this.olympicUrl);
   }
 
-  getOlympics() {
-    return this.olympics$.asObservable();
+  getOlympics(): Observable<Country[]> {
+    return this.http.get<Country[]>(this.olympicUrl);
+  }
+
+  getLoadingState(): Observable<boolean> {
+    return this.loading$.asObservable();
+  }
+  private handleError(error: any): void {
+    console.error('An error occurred:', error);
+    this.errorHandler.handleError(error);
   }
 }

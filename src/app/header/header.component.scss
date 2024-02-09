@@ -1,0 +1,20 @@
+/* heading.component.scss */
+.heading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 20px; /* Ajoutez une marge en bas pour l'espace */
+  }
+  
+  .center {
+    text-align: center;
+  }
+  
+  .split {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Ajoutez un espacement entre les éléments du côté droit */
+  }
+  

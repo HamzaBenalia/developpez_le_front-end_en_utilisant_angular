@@ -1,0 +1,12 @@
+<div class="heading">
+    <div class="center">
+        <div>{{ header.title }}</div>
+    </div>
+    <div class="split">
+        <div *ngFor="let item of header.indicators">
+            <p>{{ item.label }}</p>
+            <p>{{ item.value }}</p>
+        </div>
+    </div>
+</div>
+
